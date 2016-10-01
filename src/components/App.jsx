@@ -2,6 +2,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.vids = this.loadVids();
+
     this.state = {
       currentVid: exampleVideoData[0]
     };
@@ -13,9 +15,16 @@ class App extends React.Component {
     });
   }
 
+  loadVids() {
+    var tempStorage = [];
+    this.props.searchYouTube(undefined, function(videos) {
+      tempStorage = videos;
+    });
+    return tempStorage;
+  }
+
 
   render() {
-
     return (
       <div>
         <Nav />
@@ -23,7 +32,7 @@ class App extends React.Component {
           <VideoPlayer video={this.state.currentVid} state={this.state}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={exampleVideoData} state={this.state} click={this.onVideoClick.bind(this)}/>
+          <VideoList videos={this.vids} state={this.state} click={this.onVideoClick.bind(this)}/>
         </div>
       </div>
     );
