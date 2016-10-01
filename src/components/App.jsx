@@ -11,6 +11,7 @@ class App extends React.Component {
     this.setState({
       playVideo: !this.state.playVideo
     });
+    console.log(this.state);
   }
 
 
@@ -23,7 +24,7 @@ class App extends React.Component {
           <VideoPlayer video={exampleVideoData[1]} state={this.state}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={exampleVideoData} state={this.state} click={this.onVideoClick}/>
+          <VideoList videos={exampleVideoData} state={this.state} click={this.onVideoClick.bind(this)}/>
         </div>
       </div>
     );
