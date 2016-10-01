@@ -2,10 +2,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.vids = this.loadVids();
-
     this.state = {
-      currentVid: exampleVideoData[0]
+      currentVid: exampleVideoData[0],
+      videos: exampleVideoData
     };
   }
 
@@ -15,12 +14,14 @@ class App extends React.Component {
     });
   }
 
-  loadVids() {
-    var tempStorage = [];
+
+  componentWillMount() {
     this.props.searchYouTube(undefined, function(videos) {
-      tempStorage = videos;
-    });
-    return tempStorage;
+      this.setState({
+        currentVid: videos[0],
+        videos: videos
+      });
+    }.bind(this));
   }
 
 
@@ -32,7 +33,7 @@ class App extends React.Component {
           <VideoPlayer video={this.state.currentVid} state={this.state}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={this.vids} state={this.state} click={this.onVideoClick.bind(this)}/>
+          <VideoList videos={this.state.videos} state={this.state} click={this.onVideoClick.bind(this)}/>
         </div>
       </div>
     );
