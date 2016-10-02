@@ -6,6 +6,8 @@ class App extends React.Component {
       currentVid: exampleVideoData[0],
       videos: exampleVideoData
     };
+
+    this.throttledVids = _.throttle(this.getVids, 500).bind(this);
   }
 
   onVideoClick(video) {
@@ -15,18 +17,24 @@ class App extends React.Component {
   }
 
   getVids(query) {
+    console.log('getVids');
     var options = {
       key: window.YOUTUBE_API_KEY, 
       query: query, 
       max: 5
     };
-    console.log(query, JSON.stringify(options));
+ 
     this.props.searchYouTube(options, function(videos) {
       this.setState({
         currentVid: videos[0],
         videos: videos
       });
     }.bind(this));
+  }
+
+  throttleVids(query) {
+    console.log('throttle');
+    this.throttledVids(query);
   }
 
   componentWillMount() {
@@ -37,7 +45,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Nav getVids={this.getVids.bind(this)}/>
+        <Nav getVids={this.throttleVids.bind(this)}/>
         <div className="col-md-7">
           <VideoPlayer video={this.state.currentVid} state={this.state}/>
         </div>
