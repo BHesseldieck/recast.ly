@@ -14,9 +14,14 @@ class App extends React.Component {
     });
   }
 
-
-  componentWillMount() {
-    this.props.searchYouTube(undefined, function(videos) {
+  getVids(query) {
+    var options = {
+      key: window.YOUTUBE_API_KEY, 
+      query: query, 
+      max: 5
+    };
+    console.log(query, JSON.stringify(options));
+    this.props.searchYouTube(options, function(videos) {
       this.setState({
         currentVid: videos[0],
         videos: videos
@@ -24,11 +29,15 @@ class App extends React.Component {
     }.bind(this));
   }
 
+  componentWillMount() {
+    this.getVids('cats pants');
+  }
+
 
   render() {
     return (
       <div>
-        <Nav />
+        <Nav getVids={this.getVids.bind(this)}/>
         <div className="col-md-7">
           <VideoPlayer video={this.state.currentVid} state={this.state}/>
         </div>
